@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task19</title>
+</head>
+<body>
+	<!-- 模拟一个队列，队列的每个元素是一个数字，初始队列为空
+	有一个input输入框，以及4个操作按钮
+	点击"左侧入"，将input中输入的数字从左侧插入队列中；
+	点击"右侧入"，将input中输入的数字从右侧插入队列中；
+	点击"左侧出"，读取并删除队列左侧第一个元素，并弹窗显示元素中数值；
+	点击"右侧出"，读取并删除队列右侧第一个元素，并弹窗显示元素中数值；
+	点击队列中任何一个元素，则该元素会被从队列中删除 
+	限制输入的数字在10-100
+	队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示
+	队列展现方式变化如图，直接用高度表示数字大小
+	实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来-->
+	<style>
+		#input{
+			height: 20px;
+			width: 290px;
+			border-radius: 1em;
+			background-color: gray;
+			margin-left: 40px;
+		}
+		#button1{
+			margin-left: 40px;
+		}
+		li{
+			border:1px,solid,black;
+			list-style:none; 
+			background-color: red;
+			width: 20px;
+			float: left;
+			text-align: center;
+			margin-left: 1px;
+			position:bottom;
+		}
+	</style>
+
+	<label><input id="input" type="text" value = '50'></label><br/>
+	<button id ="btn1">左侧入</button>
+	<button id ="btn2">右侧入</button>
+	<button id ="btn3">左侧出</button>
+	<button id ="btn4">右侧出</button>
+	<button id ="btn5">排序</button>
+	<button id ="btn6">当前队列长度</button>
+
+	<ul id = 'myul'>
+		
+	</ul>
+	
+	<script>
+		var $ = function (id) {
+			return document.getElementById(id);
+		 }
+		var ul = $('myul');
+		//点击删除；
+		//封装事件冒泡点击方法；
+		ul.onclick = function  (e) {
+			var event = e || window.event;
+			var target = event.target || event.srcElement;
+			ul.removeChild(target);
+		}
+		//弹出当前队列长度
+		function alertLength () {
+			var length = ul.getElementsByTagName('li').length;
+			alert(length);
+		}
+		//实现排序功能
+		function sort () {
+			var li = document.getElementsByTagName('li');
+
+			var length = ul.getElementsByTagName('li').length;
+			for (var i = 0; i < length - 1; i++) {
+				for (var j = 0; j < length - i - 1; j++) {
+					if (parseInt(ul.li[j].style.height) > parseInt(ul.li[j+1].style.height)) {
+						var temp = ul.li[j];
+						ul.li[j] = ul.li[j+1];
+						ul.li[j+1] = temp;
+					};
+				};
+			};
+		}
+		//右侧入
+		function rightAppend () {
+			var myStr = $('input').value;
+			var length = ul.getElementsByTagName('li').length;
+			if (length <= 59) {
+				if (parseInt(myStr) >=10 && parseInt(myStr) <= 100) {
+					var li = document.createElement('li');
+					var height = window.getComputedStyle(li,null)['height'];
+					var marginTop = window.getComputedStyle(li,null)['marginTop'];
+					li.style.height = parseInt(myStr)*1.5 + 'px';
+					li.style.marginTop = 150 - parseInt(myStr)*1.5 +'px';
+					var returnChild = ul.appendChild(li);
+				}else{
+					alert("请输入10-100之间的整数！")
+				}
+			}else{
+				alert('队列已满！')
+			};
+			
+		}
+		//左侧入
+		function leftAppend () {
+			var myStr = $('input').value;
+			var length = ul.getElementsByTagName('li').length;
+			if (length <= 59) {
+					if (parseInt(myStr) >=10 && parseInt(myStr) <= 100) {
+					var li = document.createElement('li');
+					var height = window.getComputedStyle(li,null)['height'];
+					var marginTop = window.getComputedStyle(li,null)['marginTop'];
+					li.style.height = parseInt(myStr)*1.5 + 'px';
+					li.style.marginTop = 150 - parseInt(myStr)*1.5 +'px';
+					var returnChild = ul.insertBefore(li,ul.firstChild);
+				}else{
+					alert("请输入10-100之间的整数！")
+				}
+			}else{
+				alert('队列已满！')
+			};
+		}
+		//左侧出
+		function removeLeft () {	
+			var ul = $("myul");
+			var length = ul.getElementsByTagName('li').length;
+			if (length > 0) {
+				ul.removeChild(ul.firstChild);
+			}else{
+				alert('队列为空！');
+			}
+			
+		}
+		//右侧出
+		function removeRight () {	
+			var ul = $("myul");
+			var length = ul.getElementsByTagName('li').length;
+			if (length > 0) {
+				ul.removeChild(ul.lastChild);
+			}else{
+				alert('队列为空！');
+			}
+		}
+
+		$("btn1").onclick = function(){
+			leftAppend ();
+		}
+		$("btn2").onclick = function(){
+			rightAppend ();
+		}
+		$("btn3").onclick = function(){
+			removeLeft ();
+		}
+		$("btn4").onclick = function(){
+			removeRight ();
+		}
+		$("btn5").onclick = function(){
+			sort ();
+		}
+		$("btn6").onclick = function(){
+			alertLength ();
+		}
+		
+	</script>
+</body>
+</html>
